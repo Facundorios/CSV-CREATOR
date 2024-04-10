@@ -38,8 +38,8 @@ Este repositorio contiene el código Python para el Trabajo Práctico N2, el cua
 
 ### Instrucciones de Uso:
 
-1. Clonar el repositorio o descargar los archivos.
-2. Instalar XAMPP y asegurarse de que el servidor MariaDB esté en funcionamiento.
+1. Clonar el repositorio.
+2. Instalar XAMPP y asegurarse de que el servidor MariaDB/MySQL esté en funcionamiento.
 3. Ejecutar el script Python para importar y agrupar los datos de provincias y localidades.
 
 ### Estructura del Repositorio:
