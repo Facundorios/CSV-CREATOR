@@ -34,18 +34,39 @@ except MySQLdb.Error as e:
 print("Tabla creada con éxito")
 
 #Insertar datos en la tabla.
+
+#Forma antigua (al rededor de 20 segundos de carga.)
+
+# try:
+#     with open("localidades.csv", newline="") as archivo_csv:
+#         lector_csv = csv.reader(archivo_csv, delimiter=",", quotechar='"')
+#         header = next(lector_csv)
+#         for provincia in lector_csv:
+#             add_localities = f'INSERT INTO localidades (provincia, id, localidad, cp, id_prov_mstr) VALUES ("{provincia[0]}", "{provincia[1]}", "{provincia[2]}", "{provincia[3]}", "{provincia[4]}")'
+#             cursor.execute(add_localities)
+#             db.commit()
+# except MySQLdb.Error as e:
+#     db.rollback()
+#     print("Error:", e)
+# print("Datos insertados con éxito")
+
+
+#Nuevo metodo, su principal diferencia es el metodo executemany(), un metodo que toma 2 argumentos, por lo que tambien se diferencia que que se insertan todos los datos juntos, primero definiendo "localidades" como un arreglo con todos los valores de las filas con un "for in", por otro lado un "add_localities", una variable con la primera parte de la consulta sql.
+
+
 try:
     with open("localidades.csv", newline="") as archivo_csv:
         lector_csv = csv.reader(archivo_csv, delimiter=",", quotechar='"')
         header = next(lector_csv)
-        for provincia in lector_csv:
-            add_localities = f'INSERT INTO localidades (provincia, id, localidad, cp, id_prov_mstr) VALUES ("{provincia[0]}", "{provincia[1]}", "{provincia[2]}", "{provincia[3]}", "{provincia[4]}")'
-            cursor.execute(add_localities)
-            db.commit()
+        localidades = [(fila[0], fila[1], fila[2], fila[3], fila[4]) for fila in lector_csv]
+        add_localities = "INSERT INTO localidades (provincia, id, localidad, cp, id_prov_mstr) VALUES (%s, %s, %s, %s, %s)"
+        cursor.executemany(add_localities, localidades)
+        db.commit()
 except MySQLdb.Error as e:
-    db.rollback()
-    print("Error:", e)
+     db.rollback()
+     print("Error:", e)
 print("Datos insertados con éxito")
+
 
 
 #Crear archivos CSV por provincia.
