@@ -33,6 +33,7 @@ except MySQLdb.Error as e:
     print("Error:", e)
 print("Tabla creada con éxito")
 
+#Insertar datos en la tabla.
 try:
     with open("localidades.csv", newline="") as archivo_csv:
         lector_csv = csv.reader(archivo_csv, delimiter=",", quotechar='"')
@@ -47,7 +48,7 @@ except MySQLdb.Error as e:
 print("Datos insertados con éxito")
 
 
-
+#Crear archivos CSV por provincia.
 try:
     cursor.execute("SELECT DISTINCT provincia from localidades")
     provincias = cursor.fetchall()
@@ -57,7 +58,7 @@ try:
         )
         localidades = cursor.fetchall()
         with open(
-            f"csv/{provincia[0]}.csv", "w", newline="", encoding="utf-8"
+            f"csv/Localidades de {provincia[0]}.csv", "w", newline="", encoding="utf-8"
         ) as file:
             writer = csv.writer(file)
             writer.writerow(localidades)
