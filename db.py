@@ -14,11 +14,19 @@ print("Conexión a la base de datos exitosa")
 #Cursor para ejecutar las consultas.
 cursor = db.cursor()
 
+# Eliminar la tabla en caso de que ya existan.
+try:
+    cursor.execute("DROP TABLE IF EXISTS localidades")
+    db.commit()
+except MySQLdb.Error as e:
+    db.rollback()
+    print("Error al eliminar la tabla:", e)
+
+
 #Creación de la tabla y sus filas.
 try:
     create_tables = "CREATE TABLE IF NOT EXISTS localidades (provincia VARCHAR(100) NOT NULL, id INT NOT NULL, localidad VARCHAR(100) NOT NULL,cp INT(255) NOT NULL,id_prov_mstr INT(255));"
     cursor.execute(create_tables)
-    print("Tabla con sus filas creadas con éxito")
     db.commit()
 except MySQLdb.Error as e:
     db.rollback()
